@@ -316,7 +316,7 @@ main {
 
 .sidebar {
   margin-bottom: 15px;
-  max-height: 112px;
+  max-height: 15px;
   overflow: hidden;
   transition: var(--transition-2);
 }
@@ -440,7 +440,8 @@ main {
 
 .social-item .social-link {
   color: var(--light-gray-70);
-  font-size: 18px;
+  font-size: 42px;
+  transition: color 0.2s;
 }
 
 
@@ -743,6 +744,12 @@ main {
   scroll-padding-inline: 25px;
 }
 
+.clients-list img {
+  width: 90px;
+  height: 90px;
+  object-fit: contain;
+}
+
 .clients-item {
   min-width: 50%;
   scroll-snap-align: start;
@@ -1009,6 +1016,29 @@ main {
 
 .project-item > a:hover img { transform: scale(1.1); }
 
+/* Make the eye icon overlay behave like in Portfolio */
+.blog-banner-box {
+  position: relative;
+  overflow: hidden;
+}
+.blog-banner-box .project-item-icon-box {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: var(--jet, #222);
+  color: var(--orange-yellow-crayola, #f7c873);
+  padding: 18px;
+  border-radius: 12px;
+  opacity: 0;
+  transition: opacity 0.25s;
+  z-index: 2;
+  pointer-events: none; /* Prevents the icon from blocking hover */
+}
+.blog-banner-box:hover .project-item-icon-box {
+  opacity: 1;
+}
+
 .project-title,
 .project-category { margin-left: 10px; }
 
@@ -1026,9 +1056,21 @@ main {
   font-weight: var(--fw-300);
 }
 
-
-
-
+.blog-banner-box::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  width: 100%;
+  height: 100%;
+  background: hsla(0, 0%, 0%, 0.5);
+  opacity: 0;
+  z-index: 1;
+  transition: var(--transition-1);
+  border-radius: inherit;
+}
+.blog-post-item > a:hover .blog-banner-box::before {
+  opacity: 1;
+}
 
 /*-----------------------------------*\
   #BLOG
@@ -1241,6 +1283,15 @@ textarea.form-input::-webkit-resizer { display: none; }
 
   .clients-item { min-width: calc(33.33% - 10px); }
 
+  /**
+    * #SMALLER LOGO FOR CLIENTS/PICS
+    */
+
+    .small-logo {
+    width: 32px;
+    height: auto;
+  }
+
 
 
   /**
@@ -1251,6 +1302,16 @@ textarea.form-input::-webkit-resizer { display: none; }
   .blog-banner-box { height: auto; }
 
 }
+
+
+.blog-banner-box video.project-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: inherit;
+  display: block;
+}
+
 
 
 
@@ -1511,6 +1572,120 @@ textarea.form-input::-webkit-resizer { display: none; }
   .blog-posts-list { gap: 30px; }
 
   .blog-content { padding: 25px; }
+
+
+/* Modal (zentriert und größer) */
+.modal {
+  display: none; /* default: hidden */
+  position: fixed;
+  z-index: 999;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(3px);
+  
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 2rem;
+}
+
+
+
+
+
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+
+
+
+/* Modal Hintergrund */
+.modal {
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+  background-color: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(6px);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+}
+
+/* Modal Inhalt */
+.modal-content {
+  background-color: #1a1c22; /* dunkler als vorher */
+  color: #f1f1f1;
+  border-radius: 24px;
+  padding: 2.5rem;
+  width: 100%;
+  max-width: 900px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 0 40px rgba(0, 0, 0, 0.5);
+  position: relative;
+  font-family: 'Inter', sans-serif;
+}
+
+/* Schliessen Button */
+.close-button {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  font-size: 1.8rem;
+  background: none;
+  border: none;
+  color: #bbb;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+.close-button:hover {
+  color: #fff;
+}
+
+/* Titel */
+.modal-content h3 {
+  font-size: 1.8rem;
+  margin: 0;
+  color: #fff;
+}
+
+/* Kategorie-Badge */
+#modalCategory {
+  display: inline-block;
+  margin-top: 0.5rem;
+  background-color: #ffce55;
+  color: #222;
+  padding: 0.3rem 0.75rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+/* Text */
+#modalText {
+  margin-top: 1.5rem;
+  line-height: 1.7;
+  color: #ddd;
+}
+
+/* Media */
+#modalImage,
+#modalVideo {
+  margin-top: 1.5rem;
+  width: 100%;
+  border-radius: 16px;
+  object-fit: cover;
+  max-height: 500px;
+}
+
+
+
 
 
 
@@ -1879,4 +2054,15 @@ textarea.form-input::-webkit-resizer { display: none; }
 
   .timeline-text { max-width: 700px; }
 
+}
+
+/*-----------------------------------*\
+  #CONTACT
+\*-----------------------------------*/
+
+.contact-link {
+  white-space: normal !important;
+  overflow: visible !important;
+  text-overflow: unset !important;
+  word-break: break-all;
 }
